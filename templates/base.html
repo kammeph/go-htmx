@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go HTMX</title>
+    <meta name="description" content="Go HTMX" />
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#317EFB" />
+    <link href="/styles/global.css" rel="stylesheet" />
+  </head>
+  <body>
+    {{ template "menu" . }}
+    <section id="page" class="container mx-auto px-6 py-8 md:flex">{{ template "page" . }}</section>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/service-worker.js').then(
+            function (registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            },
+            function (err) {
+              console.log('ServiceWorker registration failed: ', err);
+            }
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

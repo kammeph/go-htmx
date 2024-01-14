@@ -1,0 +1,16 @@
+{
+  "name": "go-htmx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tw:build": "npx tailwindcss -i ./styles/input.css -o ./styles/global.css",
+    "tw:dev": "npx tailwindcss -i ./styles/input.css -o ./styles/global.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

@@ -1,0 +1,53 @@
+{{ block "page" . }}
+<div class="flex flex-row gap-4">
+  <!-- {{ block "content" . }} -->
+  <div>
+    <h1>{{ translate "GEARBOXES.TITLE"}}</h1>
+    <div class="pt-6 overflow-x-auto">
+      <div class="relative w-full overflow-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <input aria-label="select or deselect all elements" type="checkbox" />
+              </th>
+              <th>{{ translate "GENERAL.SERIAL"}}</th>
+              <th class="hidden md:table-cell">{{ translate "GENERAL.TYPE"}}</th>
+              <th class="hidden md:table-cell">{{ translate "GENERAL.BACKLASH"}}</th>
+              <th class="hidden md:table-cell">{{ translate "GENERAL.HOUSING"}}</th>
+              <th class="hidden md:table-cell">{{ translate "GENERAL.POLYGON"}}</th>
+              <th class="hidden md:table-cell">{{ translate "GENERAL.GEAR"}}</th>
+              <th aria-label="edit row"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range $gearbox := .Gearboxes }}
+            <tr>
+              <td>
+                <input aria-label="select row" type="checkbox" />
+              </td>
+              <td>{{ .Serial }}</td>
+              <td class="hidden md:table-cell">{{ $gearbox.Type }}</td>
+              <td class="hidden md:table-cell">{{ $gearbox.Backlash }}</td>
+              <td class="hidden md:table-cell">{{ $gearbox.Housing }}</td>
+              <td class="hidden md:table-cell">{{ $gearbox.Polygon }}</td>
+              <td class="hidden md:table-cell">{{ $gearbox.Gear }}</td>
+              <td
+                class="cursor-pointer"
+                hx-get="/{{ $.Locale }}/gearboxes/{{ $gearbox.ID }}"
+                hx-trigger="click"
+                hx-target="#page"
+                hx-push-url="true"
+              >
+                Edit
+              </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- {{ end }} -->
+</div>
+{{ end }}

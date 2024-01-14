@@ -1,0 +1,26 @@
+{
+  "GENERAL": {
+    "SERIAL": "Serial",
+    "TYPE": "Type",
+    "BACKLASH": "Backlash",
+    "HOUSING": "Housing",
+    "POLYGON": "Polygon",
+    "GEAR": "Gear"
+  },
+  "GEARBOXES": {
+    "TITLE": "Gearboxes"
+  },
+  "TYPES": {
+    "TITLE": "Types",
+    "GEARBOX_TYPES": "Gearbox Types",
+    "HOUSING_TYPES": "Housing Types",
+    "POLYGON_TYPES": "Polygon Types",
+    "GEAR_TYPES": "Gear Types"
+  },
+  "COMPONENTS": {
+    "TITLE": "Components",
+    "HOUSING_COMPONENTS": "Housings",
+    "POLYGON_COMPONENTS": "Polygons",
+    "GEAR_COMPONENTS": "Gears"
+  }
+}

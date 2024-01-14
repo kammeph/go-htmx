@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+table {
+  @apply w-full caption-bottom text-sm;
+}
+
+th {
+  @apply h-12 p-4 text-center align-middle font-medium;
+}
+
+tr {
+  @apply border-b px-4 last:border-0 transition-colors hover:bg-gray-100 text-gray-700;
+}
+
+td {
+  @apply p-4 text-center align-middle;
+}
+
+input[type='checkbox'] {
+  @apply h-4 w-4 shrink-0 accent-gray-600 rounded-sm;
+}

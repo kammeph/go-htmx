@@ -1,0 +1,26 @@
+{{ define "submenu" }}
+<aside class="w-full md:w-40 md:mr-6" hx-boost="true" hx-target="#page">
+  <ul class="space-y-2">
+    <li>
+      <a class="text-sm text-gray-700 hover:text-blue-500" href="/{{ .Locale }}/types/gearbox">
+        {{ translate "TYPES.GEARBOX_TYPES" }}
+      </a>
+    </li>
+    <li>
+      <a class="text-sm text-gray-700 hover:text-blue-500" href="/{{ .Locale }}/types/housing">
+        {{ translate "TYPES.HOUSING_TYPES" }}
+      </a>
+    </li>
+    <li>
+      <a class="text-sm text-gray-700 hover:text-blue-500" href="/{{ .Locale }}/types/polygon">
+        {{ translate "TYPES.POLYGON_TYPES" }}
+      </a>
+    </li>
+    <li>
+      <a class="text-sm text-gray-700 hover:text-blue-500" href="/{{ .Locale }}/types/gear">
+        {{ translate "TYPES.GEAR_TYPES" }}
+      </a>
+    </li>
+  </ul>
+</aside>
+{{ end }}

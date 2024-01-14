@@ -1,0 +1,9 @@
+{{ block "page" . }}
+<div class="flex flex-row gap-4">
+  {{ template "submenu" .}} {{ block "content" . }}
+  <div>
+    <h1>{{ translate "COMPONENTS.POLYGON_COMPONENTS" }}</h1>
+  </div>
+  {{ end }}
+</div>
+{{ end }}

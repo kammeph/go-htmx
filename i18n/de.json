@@ -1,0 +1,26 @@
+{
+  "GENERAL": {
+    "SERIAL": "Seriennummer",
+    "TYPE": "Typ",
+    "BACKLASH": "Spiel",
+    "HOUSING": "Gehäuse",
+    "POLYGON": "Polygon",
+    "GEAR": "Zahnrad"
+  },
+  "GEARBOXES": {
+    "TITLE": "Getriebe"
+  },
+  "TYPES": {
+    "TITLE": "Typen",
+    "GEARBOX_TYPES": "Getriebetypen",
+    "HOUSING_TYPES": "Gehäusetypen",
+    "POLYGON_TYPES": "Polygontypen",
+    "GEAR_TYPES": "Zahnradtypen"
+  },
+  "COMPONENTS": {
+    "TITLE": "Bauteile",
+    "HOUSING_COMPONENTS": "Gehäuse",
+    "POLYGON_COMPONENTS": "Polygone",
+    "GEAR_COMPONENTS": "Zahnräder"
+  }
+}
