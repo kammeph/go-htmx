@@ -13,6 +13,8 @@ import (
 	"github.com/kammeph/go-htmx/internal/data"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
+	"golang.org/x/text/message"
+	"golang.org/x/text/number"
 )
 
 const (
@@ -22,14 +24,13 @@ const (
 	typesMenuTemplatePath         = "templates/partials/types-menu.html"
 	componentsMenuTemplatePath    = "templates/partials/components-menu.html"
 	gearboxesTemplatePath         = "templates/pages/gearboxes.html"
-	gearboxTypesTemplatePath      = "templates/pages/types/gearbox-types.html"
-	gearTypesTemplatePath         = "templates/pages/types/gear-types.html"
-	housingTypesTemplatePath      = "templates/pages/types/housing-types.html"
-	polygonTypesTemplatePath      = "templates/pages/types/polygon-types.html"
 	gearComponentsTemplatePath    = "templates/pages/components/gear-components.html"
 	housingComponentsTemplatePath = "templates/pages/components/housing-components.html"
 	polygonComponentsTemplatePath = "templates/pages/components/polygon-components.html"
 	gearboxEditTemplatePath       = "templates/pages/gearbox-edit.html"
+	housingEditTemplatePath       = "templates/pages/components/housing-edit.html"
+	polygonEditTemplatePath       = "templates/pages/components/polygon-edit.html"
+	gearEditTemplatePath          = "templates/pages/components/gear-edit.html"
 )
 
 func TranslatorMiddleware(t *Translator) func(http.Handler) http.Handler {
@@ -44,22 +45,33 @@ func TranslatorMiddleware(t *Translator) func(http.Handler) http.Handler {
 
 type Translator struct {
 	localizers map[string]*i18n.Localizer
+	printers   map[string]*message.Printer
 	locale     string
 }
 
 func NewTranslator(bundle *i18n.Bundle, locales []string, defaultLocale string) *Translator {
 	localizers := map[string]*i18n.Localizer{}
+	printers := map[string]*message.Printer{}
 	for _, locale := range locales {
 		localizers[locale] = i18n.NewLocalizer(bundle, locale)
+		printers[locale] = message.NewPrinter(language.Make(locale))
 	}
-	return &Translator{localizers, defaultLocale}
+	return &Translator{localizers, printers, defaultLocale}
 }
 
 func (t *Translator) Translate(messageID string) string {
-	translation, _ := t.localizers[t.locale].Localize(&i18n.LocalizeConfig{
+	translation, err := t.localizers[t.locale].Localize(&i18n.LocalizeConfig{
 		MessageID: messageID,
 	})
+	if err != nil {
+		fmt.Println(err)
+		return messageID
+	}
 	return translation
+}
+
+func (t *Translator) Number(input interface{}) string {
+	return t.printers[t.locale].Sprint(number.Decimal(input))
 }
 
 func (t *Translator) GetLocale() string {
@@ -77,19 +89,19 @@ func main() {
 	bundle.MustLoadMessageFile("i18n/de.json")
 
 	translator := NewTranslator(bundle, []string{"en", "de"}, "en")
-	funcs := template.FuncMap{"translate": translator.Translate}
+	funcs := template.FuncMap{"translate": translator.Translate, "number": translator.Number}
 
 	gearboxesTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, gearboxesTemplatePath))
-	gearboxTypeTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, typesMenuTemplatePath, gearboxTypesTemplatePath))
-	gearTypeTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, typesMenuTemplatePath, gearTypesTemplatePath))
-	housingTypeTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, typesMenuTemplatePath, housingTypesTemplatePath))
-	polygonTypeTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, typesMenuTemplatePath, polygonTypesTemplatePath))
 	gearComponentTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, componentsMenuTemplatePath, gearComponentsTemplatePath))
 	housingComponentTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, componentsMenuTemplatePath, housingComponentsTemplatePath))
 	polygonComponentTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, componentsMenuTemplatePath, polygonComponentsTemplatePath))
 	gearboxEditTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, gearboxEditTemplatePath))
+	housingEditTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, housingEditTemplatePath))
+	polygonEditTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, polygonEditTemplatePath))
+	gearEditTemplate := template.Must(template.New(baseTemplateName).Funcs(funcs).ParseFiles(baseTemplatePath, menuTemplatePath, gearEditTemplatePath))
 
 	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 	r.Use(middleware.Compress(5))
 	fs := http.FileServer(http.Dir("./public"))
 	r.Handle("/public/*", http.StripPrefix("/public", fs))
@@ -101,71 +113,90 @@ func main() {
 	})
 	r.Route("/{locale}", func(r chi.Router) {
 		r.Use(TranslatorMiddleware(translator))
-		r.Route("/types", func(r chi.Router) {
-			r.Get("/gearbox", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					gearboxTypeTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					gearboxTypeTemplate.Execute(w, data)
-				}
-			})
-			r.Get("/housing", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					housingTypeTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					housingTypeTemplate.Execute(w, data)
-				}
-			})
-			r.Get("/polygon", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					polygonTypeTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					polygonTypeTemplate.Execute(w, data)
-				}
-			})
-			r.Get("/gear", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					gearTypeTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					gearTypeTemplate.Execute(w, data)
-				}
-			})
-		})
 		r.Route("/components", func(r chi.Router) {
-			r.Get("/housing", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					housingComponentTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					housingComponentTemplate.Execute(w, data)
-				}
+			r.Route("/housing", func(r chi.Router) {
+				r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+					boosted := r.Header.Get("HX-Boosted")
+					data := map[string]interface{}{"Housings": data.Housings, "Locale": translator.GetLocale()}
+					if boosted == "true" {
+						housingComponentTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						housingComponentTemplate.Execute(w, data)
+					}
+				})
+				r.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
+					target := r.Header.Get("HX-Target")
+					id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 0)
+					var selectedHousing data.Housing
+					for _, housing := range data.Housings {
+						if housing.ID == id {
+							selectedHousing = housing
+							break
+						}
+					}
+					data := map[string]interface{}{"Housing": selectedHousing, "Locale": translator.GetLocale()}
+					if target == "page" {
+						housingEditTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						housingEditTemplate.Execute(w, data)
+					}
+				})
 			})
-			r.Get("/polygon", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					polygonComponentTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					polygonComponentTemplate.Execute(w, data)
-				}
+			r.Route("/polygon", func(r chi.Router) {
+				r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+					boosted := r.Header.Get("HX-Boosted")
+					data := map[string]interface{}{"Polygons": data.Polygons, "Locale": translator.GetLocale()}
+					if boosted == "true" {
+						polygonComponentTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						polygonComponentTemplate.Execute(w, data)
+					}
+				})
+				r.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
+					target := r.Header.Get("HX-Target")
+					id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 0)
+					var selectedPolygon data.Polygon
+					for _, polygon := range data.Polygons {
+						if polygon.ID == id {
+							selectedPolygon = polygon
+							break
+						}
+					}
+					data := map[string]interface{}{"Polygon": selectedPolygon, "Locale": translator.GetLocale()}
+					if target == "page" {
+						polygonEditTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						polygonEditTemplate.Execute(w, data)
+					}
+				})
 			})
-			r.Get("/gear", func(w http.ResponseWriter, r *http.Request) {
-				boosted := r.Header.Get("HX-Boosted")
-				data := map[string]interface{}{"Locale": translator.GetLocale()}
-				if boosted == "true" {
-					gearComponentTemplate.ExecuteTemplate(w, "page", data)
-				} else {
-					gearComponentTemplate.Execute(w, data)
-				}
+			r.Route("/gear", func(r chi.Router) {
+				r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+					boosted := r.Header.Get("HX-Boosted")
+					data := map[string]interface{}{"Gears": data.Gears, "Locale": translator.GetLocale()}
+					if boosted == "true" {
+						gearComponentTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						gearComponentTemplate.Execute(w, data)
+					}
+				})
+				r.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
+					target := r.Header.Get("HX-Target")
+					id, _ := strconv.ParseInt(chi.URLParam(r, "id"), 10, 0)
+					var selectedGear data.Gear
+					for _, gear := range data.Gears {
+						if gear.ID == id {
+							selectedGear = gear
+							break
+						}
+					}
+					data := map[string]interface{}{"Gear": selectedGear, "Locale": translator.GetLocale()}
+					if target == "page" {
+						gearEditTemplate.ExecuteTemplate(w, "page", data)
+					} else {
+						gearEditTemplate.Execute(w, data)
+					}
+				})
 			})
 		})
 		r.Route("/gearboxes", func(r chi.Router) {
@@ -204,6 +235,10 @@ func main() {
 		rest := strings.Join(strings.Split(r.Referer(), "/")[4:], "/")
 		w.Header().Set("HX-Redirect", fmt.Sprintf("/%s/%s", locale, rest))
 		w.WriteHeader(http.StatusFound)
+	})
+	r.Get("/test", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(r.URL)
+		fmt.Println(r.URL.Query())
 	})
 	fmt.Println(http.ListenAndServe(":8080", r))
 }

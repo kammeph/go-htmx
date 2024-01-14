@@ -2,25 +2,28 @@
   "GENERAL": {
     "SERIAL": "Seriennummer",
     "TYPE": "Typ",
+    "SIZE": "Größe",
     "BACKLASH": "Spiel",
+    "MEASURE1": "Messwert 1",
+    "MEASURE2": "Messwert 2",
     "HOUSING": "Gehäuse",
     "POLYGON": "Polygon",
-    "GEAR": "Zahnrad"
+    "GEAR": "Zahnrad",
+    "SAVE": "Speichern",
+    "PREVIOUS": "Zurück",
+    "NEXT": "Weiter"
   },
   "GEARBOXES": {
-    "TITLE": "Getriebe"
-  },
-  "TYPES": {
-    "TITLE": "Typen",
-    "GEARBOX_TYPES": "Getriebetypen",
-    "HOUSING_TYPES": "Gehäusetypen",
-    "POLYGON_TYPES": "Polygontypen",
-    "GEAR_TYPES": "Zahnradtypen"
+    "TITLE": "Getriebe",
+    "EDIT_GEARBOX": "Getriebe bearbeiten"
   },
   "COMPONENTS": {
     "TITLE": "Bauteile",
     "HOUSING_COMPONENTS": "Gehäuse",
     "POLYGON_COMPONENTS": "Polygone",
-    "GEAR_COMPONENTS": "Zahnräder"
+    "GEAR_COMPONENTS": "Zahnräder",
+    "EDIT_HOUSING": "Gehäuse bearbeiten",
+    "EDIT_POLYGON": "Polygon bearbeiten",
+    "EDIT_GEAR": "Zahnrad bearbeiten"
   }
 }

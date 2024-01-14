@@ -1,6 +1,6 @@
 {{ block "page" . }}
 <div class="flex flex-row gap-4">
-  <!-- {{ block "content" . }} -->
+  {{ block "content" . }}
   <div>
     <h1>{{ translate "GEARBOXES.TITLE"}}</h1>
     <div class="pt-6 overflow-x-auto">
@@ -28,7 +28,7 @@
               </td>
               <td>{{ .Serial }}</td>
               <td class="hidden md:table-cell">{{ $gearbox.Type }}</td>
-              <td class="hidden md:table-cell">{{ $gearbox.Backlash }}</td>
+              <td class="hidden md:table-cell">{{ number $gearbox.Backlash }}</td>
               <td class="hidden md:table-cell">{{ $gearbox.Housing }}</td>
               <td class="hidden md:table-cell">{{ $gearbox.Polygon }}</td>
               <td class="hidden md:table-cell">{{ $gearbox.Gear }}</td>
@@ -39,15 +39,30 @@
                 hx-target="#page"
                 hx-push-url="true"
               >
-                Edit
+                <img src="/public/right-arrow.svg" alt="Right arrow" class="w-5" />
               </td>
             </tr>
             {{ end }}
           </tbody>
         </table>
+        <div class="mt-6 flex justify-center">
+          <button class="text-center rounded-md text-sm font-medium h-10 px-4 py-2 mx-2 border">
+            {{ translate "GENERAL.PREVIOUS" }}
+          </button>
+          <button class="text-center rounded-md text-sm font-medium h-10 px-4 py-2 mx-2">1</button>
+          <button class="text-center rounded-md text-sm font-medium h-10 px-4 py-2 mx-2 border">
+            2
+          </button>
+          <button class="text-center rounded-md text-sm font-medium h-10 px-4 py-2 mx-2 border">
+            3
+          </button>
+          <button class="text-center rounded-md text-sm font-medium h-10 px-4 py-2 mx-2 border">
+            {{ translate "GENERAL.NEXT" }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
-  <!-- {{ end }} -->
+  {{ end }}
 </div>
 {{ end }}

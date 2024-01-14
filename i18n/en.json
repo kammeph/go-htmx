@@ -2,25 +2,28 @@
   "GENERAL": {
     "SERIAL": "Serial",
     "TYPE": "Type",
+    "SIZE": "Size",
     "BACKLASH": "Backlash",
+    "MEASURE1": "Measure 1",
+    "MEASURE2": "Measure 2",
     "HOUSING": "Housing",
     "POLYGON": "Polygon",
-    "GEAR": "Gear"
+    "GEAR": "Gear",
+    "SAVE": "Save",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next"
   },
   "GEARBOXES": {
-    "TITLE": "Gearboxes"
-  },
-  "TYPES": {
-    "TITLE": "Types",
-    "GEARBOX_TYPES": "Gearbox Types",
-    "HOUSING_TYPES": "Housing Types",
-    "POLYGON_TYPES": "Polygon Types",
-    "GEAR_TYPES": "Gear Types"
+    "TITLE": "Gearboxes",
+    "EDIT_GEARBOX": "Edit Gearbox"
   },
   "COMPONENTS": {
     "TITLE": "Components",
     "HOUSING_COMPONENTS": "Housings",
     "POLYGON_COMPONENTS": "Polygons",
-    "GEAR_COMPONENTS": "Gears"
+    "GEAR_COMPONENTS": "Gears",
+    "EDIT_HOUSING": "Edit Housing",
+    "EDIT_POLYGON": "Edit Polygon",
+    "EDIT_GEAR": "Edit Gear"
   }
 }

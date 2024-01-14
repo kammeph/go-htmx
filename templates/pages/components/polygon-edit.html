@@ -2,18 +2,18 @@
 <div class="w-full md:flex-1">
   <div class="flex gap-4">
     <a
-      href="/{{ .Locale }}/gearboxes"
+      href="/{{ .Locale }}/components/polygon"
       hx-boost="true"
       hx-target="#page"
       class="flex items-center justify-center"
     >
       <img src="/public/left-arrow.svg" alt="Left arrow" class="w-5" />
     </a>
-    <h3 class="text-gray-700 text-3xl font-medium">{{ translate "GEARBOXES.EDIT_GEARBOX"}}</h3>
+    <h3 class="text-gray-700 text-3xl font-medium">{{ translate "COMPONENTS.EDIT_POLYGON" }}</h3>
   </div>
   <div class="mt-6">
     <form class="group">
-      {{ block "gearbox_form" .Gearbox }}
+      {{ block "polygonbox_form" .Polygon }}
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="serial">
           {{ translate "GENERAL.SERIAL" }}
@@ -27,7 +27,7 @@
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="type"
-          >{{ translate "GENERAL.TYPE"}}</label
+          >{{ translate "GENERAL.TYPE" }}</label
         >
         <input
           class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
@@ -37,61 +37,52 @@
         />
       </div>
       <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="type"
+          >{{ translate "GENERAL.SIZE" }}</label
+        >
+        <input
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          id="type"
+          value="{{ .Size }}"
+          type="text"
+        />
+      </div>
+      <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="backlash"
-          >{{ translate "GENERAL.BACKLASH"}}</label
+          >{{ translate "GENERAL.MEASURE1" }}</label
         >
         <input
           class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
           id="backlash"
-          value="{{ .Backlash }}"
+          value="{{ .Measure1 }}"
           type="text"
           inputmode="numeric"
-          pattern="[0-9.]*"
+          pattern="[0-9.-]*"
         />
       </div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="housing"
-          >{{ translate "GENERAL.HOUSING" }}</label
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="backlash"
+          >{{ translate "GENERAL.MEASURE2" }}</label
         >
         <input
           class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          id="housing"
-          value="{{ .Housing }}"
+          id="backlash"
+          value="{{ .Measure2 }}"
           type="text"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="polygon"
-          >{{ translate "GENERAL.POLYGON" }}</label
-        >
-        <input
-          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          id="polygon"
-          value="{{ .Polygon }}"
-          type="text"
-        />
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="gear"
-          >{{ translate "GENERAL.GEAR" }}</label
-        >
-        <input
-          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-          id="gear"
-          value="{{ .Gear }}"
-          type="text"
+          inputmode="numeric"
+          pattern="[0-9.-]*"
         />
       </div>
       {{ end }}
       <div class="flex items-end justify-end">
         <a
-          href="/{{ .Locale }}/gearboxes"
+          href="/{{ .Locale }}/components/polygon"
           hx-boost="true"
           hx-target="#page"
           class="cursor-pointer border rounded-md text-sm font-medium group-invalid:pointer-events-none group-invalid:opacity-50 h-10 px-4 py-2"
           type="submit"
         >
-          {{ translate "GENERAL.SAVE" }}
+          Save
         </a>
       </div>
     </form>

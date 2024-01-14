@@ -1,5 +1,5 @@
 var CACHE_NAME = 'my-site-cache-v1';
-var urlsToCache = [];
+var urlsToCache = ['/public/'];
 
 self.addEventListener('install', function (event) {
   // Perform install steps
