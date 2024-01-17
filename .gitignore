@@ -1,2 +1,4 @@
 node_modules
 ./styles/global.css
+./bin
+./build

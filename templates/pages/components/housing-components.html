@@ -1,10 +1,9 @@
 {{ block "page" . }}
-<div class="flex flex-row gap-4">
+<div class="w-full flex flex-row gap-4">
   {{ template "submenu" .}} {{ block "content" . }}
-  <div>
+  <div class="w-full">
     <h1>{{ translate "COMPONENTS.HOUSING_COMPONENTS" }}</h1>
     <div class="pt-6 overflow-x-auto">
-      <div class="relative w-full overflow-auto">
         <table>
           <thead>
             <tr>
@@ -60,7 +59,6 @@
         </div>
       </div>
     </div>
-  </div>
   {{ end }}
 </div>
 {{ end }}

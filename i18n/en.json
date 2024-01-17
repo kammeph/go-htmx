@@ -11,7 +11,8 @@
     "GEAR": "Gear",
     "SAVE": "Save",
     "PREVIOUS": "Previous",
-    "NEXT": "Next"
+    "NEXT": "Next",
+    "FILTER": "Filter"
   },
   "GEARBOXES": {
     "TITLE": "Gearboxes",

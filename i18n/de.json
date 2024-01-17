@@ -11,7 +11,8 @@
     "GEAR": "Zahnrad",
     "SAVE": "Speichern",
     "PREVIOUS": "Zurück",
-    "NEXT": "Weiter"
+    "NEXT": "Weiter",
+    "FILTER": "Filtern"
   },
   "GEARBOXES": {
     "TITLE": "Getriebe",

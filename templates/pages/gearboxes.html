@@ -1,11 +1,10 @@
 {{ block "page" . }}
-<div class="flex flex-row gap-4">
+<div class="w-full flex flex-row gap-4">
   {{ block "content" . }}
-  <div>
+  <div class="w-full">
     <h1>{{ translate "GEARBOXES.TITLE"}}</h1>
     <div class="pt-6 overflow-x-auto">
-      <div class="relative w-full overflow-auto">
-        <table>
+        <table class="w-full">
           <thead>
             <tr>
               <th>
@@ -61,8 +60,40 @@
           </button>
         </div>
       </div>
-    </div>
   </div>
+      <div>
+        <!-- <form class="flex flex-col gap-2" hx-boost="true" hx-params="Serial" hx-target="#page" hx-get="/{{ .Locale }}/gearboxes" hx-vals='{"hello":"world"}'> -->
+        <form class="flex flex-col gap-2" hx-boost="true" hx-target="#page" hx-post="/{{ .Locale }}/gearboxes" hx-vals='{"hello":"world"}'>
+        <!-- <form class="flex flex-col gap-2" hx-boost="true" hx-target="#page" action="/{{ .Locale }}/gearboxes" method="get" hx-vals='{"Serial":"world"}'> -->
+          <input 
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.SERIAL" }}"
+           type="text" name="Serial"/>
+          <input
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.TYPE" }}"
+           type="text" name="Type"/>
+          <input
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.BACKLASH" }}"
+           type="text" name="Backlash"/>
+          <input
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.HOUSING" }}"
+           type="text" name="Housing"/>
+          <input
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.POLYGON" }}"
+           type="text" name="Polygon"/>
+          <input 
+          class="flex h-10 text-sm shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+          placeholder="{{ translate "GENERAL.GEAR" }}"
+           type="text" name="Gear"/>
+          <button
+          class="cursor-pointer border rounded-md text-sm font-medium group-invalid:pointer-events-none group-invalid:opacity-50 h-10 px-4 py-2"
+           type="submit">{{ translate "GENERAL.FILTER" }}</button>
+        </form>
+      </div>
   {{ end }}
 </div>
 {{ end }}
